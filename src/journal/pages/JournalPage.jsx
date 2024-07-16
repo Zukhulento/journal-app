@@ -1,4 +1,4 @@
-export const JournalPage = () => {
+export const JournalPage  = () => {
   return (
     <div>JournalPage</div>
   )
