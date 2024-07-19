@@ -7,7 +7,7 @@ import { getFirestore } from "firebase/firestore/lite";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCzHXFgfusteGubYpaoTw9oi1XJ0mCmzyQ",
+  apiKey: import.meta.env.VITE_APIKEY,
   authDomain: "react-journal-b950c.firebaseapp.com",
   projectId: "react-journal-b950c",
   storageBucket: "react-journal-b950c.appspot.com",
