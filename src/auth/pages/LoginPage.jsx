@@ -2,13 +2,23 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { Google } from "@mui/icons-material";
-import { Button, Grid, Link, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AuthLayouth } from "../layout/AuthLayouth";
 import { useForm } from "../../hooks";
-import { checkingAuthentication, startGoogleSignIn } from "../../store/auth";
+import {
+  startGoogleSignIn,
+  startLoginWithEmailPassword,
+} from "../../store/auth";
 
 export const LoginPage = () => {
-  const { status } = useSelector((state) => state.auth);
+  const { status, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { email, password, onInputChange } = useForm({
     email: "email@gmail.com",
@@ -17,8 +27,8 @@ export const LoginPage = () => {
   const isAuthenticating = useMemo(() => status === "checking", [status]);
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log({ email, password });
-    dispatch(checkingAuthentication());
+    // dispatch(checkingAuthentication());
+    dispatch(startLoginWithEmailPassword({ email, password }));
   };
   const onGoogleSignIn = () => {
     console.log("Google Sign In");
@@ -26,7 +36,10 @@ export const LoginPage = () => {
   };
   return (
     <AuthLayouth title="Login">
-      <form onSubmit={onSubmit}>
+      <form
+        onSubmit={onSubmit}
+        className="animate__animated animate__fadeIn animate__faster"
+      >
         <Grid container>
           <Grid item xs={12} sx={{ mt: 2 }}>
             <TextField
@@ -51,13 +64,26 @@ export const LoginPage = () => {
             />
           </Grid>
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+            <Grid display={!!errorMessage ? "" : "none"} item xs={12}>
+              <Alert severity="error">{errorMessage}</Alert>
+            </Grid>
             <Grid item xs={12} sm={6}>
-              <Button disabled={isAuthenticating} type="submit" variant="contained" fullWidth>
+              <Button
+                disabled={isAuthenticating}
+                type="submit"
+                variant="contained"
+                fullWidth
+              >
                 Login
               </Button>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Button disabled={isAuthenticating} variant="contained" fullWidth onClick={onGoogleSignIn}>
+              <Button
+                disabled={isAuthenticating}
+                variant="contained"
+                fullWidth
+                onClick={onGoogleSignIn}
+              >
                 <Google />
                 <Typography sx={{ ml: 1 }}>Google</Typography>
               </Button>

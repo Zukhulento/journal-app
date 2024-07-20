@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Alert, Button, Grid, TextField, Typography } from "@mui/material";
 import { AuthLayouth } from "../layout/AuthLayouth";
 import { Link } from "react-router-dom";
 import { useForm } from "../../hooks";
@@ -35,6 +35,13 @@ export const RegisterPage = () => {
     passwordValid,
     onInputChange,
   } = useForm(formData, formValidations);
+
+  const { status, errorMessage } = useSelector((state) => state.auth);
+  // Este useMemo es para que no se ejecute en cada renderizado
+  const isCheckingAuthentication = useMemo(
+    () => status === "checking",
+    [status]
+  );
   const onSubmit = (e) => {
     e.preventDefault();
     setFormSubmited(true);
@@ -43,7 +50,10 @@ export const RegisterPage = () => {
   };
   return (
     <AuthLayouth title="Register">
-      <form onSubmit={onSubmit}>
+      <form
+        onSubmit={onSubmit}
+        className="animate__animated animate__fadeIn animate__faster"
+      >
         <Grid container>
           <Grid item xs={12} sx={{ mt: 2 }}>
             <TextField
@@ -85,8 +95,16 @@ export const RegisterPage = () => {
             />
           </Grid>
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+            <Grid display={!!errorMessage ? "" : "none"} item xs={12}>
+              <Alert severity="error">{errorMessage}</Alert>
+            </Grid>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" fullWidth>
+              <Button
+                disabled={isCheckingAuthentication}
+                type="submit"
+                variant="contained"
+                fullWidth
+              >
                 Crear cuenta
               </Button>
             </Grid>
