@@ -17,13 +17,14 @@ import {
   startLoginWithEmailPassword,
 } from "../../store/auth";
 
+const formInit = {
+  email: "email@gmail.com",
+  password: "123456",
+};
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { email, password, onInputChange } = useForm({
-    email: "email@gmail.com",
-    password: "123456",
-  });
+  const { email, password, onInputChange } = useForm(formInit);
   const isAuthenticating = useMemo(() => status === "checking", [status]);
   const onSubmit = (e) => {
     e.preventDefault();
