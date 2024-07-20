@@ -20,4 +20,4 @@ export const FirebaseApp = initializeApp(firebaseConfig);
 // Para google Auth
 export const FirebaseAuth = getAuth(FirebaseApp);
 // Para la base de datos
-export const Firestore = getFirestore(FirebaseApp);
+export const FirebaseDb = getFirestore(FirebaseApp);
