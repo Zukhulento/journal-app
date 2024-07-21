@@ -7,6 +7,7 @@ import {
   registerUserWithEmail,
   singInWithGoogle,
 } from "../../firebase/providers";
+import { setSaving } from "../journal";
 import { checkingCredentials, login, logout } from "./";
 
 export const checkingAuthentication = (email, password) => {
@@ -68,5 +69,12 @@ export const startLogout = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+};
+
+export const starUploadingFiles = (files = []) => {
+  return async (dispatch) => {
+    dispatch(setSaving());
+    console.log(files);
   };
 };
