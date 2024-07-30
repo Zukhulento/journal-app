@@ -1,7 +1,8 @@
 import { collection, doc, setDoc } from "firebase/firestore/lite";
 import { FirebaseDb } from "../../firebase/config";
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSaving, updateNote } from "./";
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActivNote, setSaving, updateNote } from "./";
 import { loadNotes } from "../../helpers/loadNotes";
+import { fileUpload } from "../../helpers/fileUpload";
 
 export const startNewNote = () => {
   return async (dispatch, getState) => {
@@ -46,5 +47,21 @@ export const startSaveNote = () => {
     // El merge hace que se unan donde tengan datos que no se envíen o reciban
     await setDoc(docRef, noteToSave, { merge: true });
     dispatch(updateNote(note));
+  };
+};
+
+export const startUploadingFiles = (files = []) => {
+  return async (dispatch) => {
+    dispatch(setSaving());
+    // ? Esto es para subir un solo archivo
+    // await fileUpload(files[0])
+    // ? Esto es para subir más de un solo archivo
+    const fileUploadPromises = [];
+    for (const file of files) {
+      fileUploadPromises.push(fileUpload(file));
+    }
+    const photosUrls = await Promise.all(fileUploadPromises)
+    dispatch(setPhotosToActivNote(photosUrls));
+    console.log(photosUrls);
   };
 };
