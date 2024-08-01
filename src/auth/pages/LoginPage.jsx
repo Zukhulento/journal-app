@@ -18,8 +18,8 @@ import {
 } from "../../store/auth";
 
 const formInit = {
-  email: "email@gmail.com",
-  password: "123456",
+  email: "",
+  password: "",
 };
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);

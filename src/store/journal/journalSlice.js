@@ -46,10 +46,13 @@ export const journalSlice = createSlice({
       state.active = null; // Limpiar la nota activa
     },
     setPhotosToActivNote: (state, action) => {
-      state.active.imageUrls = [...state.active.imageUrls,...action.payload];
+      state.active.imageUrls = [...state.active.imageUrls, ...action.payload];
       state.isSaving = false;
     },
-    deleteNoteById: (state, action) => {},
+    deleteNoteById: (state, action) => {
+      state.notes = state.notes.filter((note) => note.id !== action.payload);
+      state.active = null;
+    },
   },
 });
 
